@@ -6,14 +6,12 @@ import net.javacode.spring_311.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class SecurityService implements UserDetailsService {
     private final UserRepository userRepository;
-
 
     @Autowired
     public SecurityService(UserRepository userRepository) {
@@ -27,3 +25,4 @@ public class SecurityService implements UserDetailsService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found: " + username));
     }
 }
+

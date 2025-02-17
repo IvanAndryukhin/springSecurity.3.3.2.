@@ -7,31 +7,30 @@
 </head>
 <body>
 <h1>Edit User</h1>
-
-<!-- Сообщение об ошибке или успешном обновлении -->
-<div th:if="${successMessage}">
-    <p th:text="${successMessage}" style="color:green;"></p>
-</div>
-<div th:if="${errorMessages}">
-    <p th:each="message : ${errorMessages}" th:text="${message}" style="color:red;"></p>
-</div>
-
 <form action="/admin/update" method="post">
-    <input type="hidden" name="id" th:value="${user.id}"/>
+    <input type="hidden" name="id" value="${user.id}">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" value="${user.username}" required><br>
 
-    <label for="name">Name</label>
-    <input type="text" id="name" name="name" th:value="${user.name}" required>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" value="${user.password}" required><br>
 
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" th:value="${user.email}" required>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="${user.name}" required><br>
 
-    <label for="address">Address</label>
-    <input type="text" id="address" name="address" th:value="${user.address}" required>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="${user.email}" required><br>
 
-    <input type="submit" value="Update User">
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" value="${user.address}" required><br>
+
+    <button type="submit">Update</button>
 </form>
-
-<a href="/" class="button">Back to User List</a>
+<form action="/admin/delete" method="post">
+    <input type="hidden" name="id" value="${user.id}">
+    <button type="submit">Delete User</button>
+</form>
+<a href="/user/">Back to Users</a>
 </body>
 </html>
 

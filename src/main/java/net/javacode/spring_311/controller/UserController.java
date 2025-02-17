@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-@Controller 
+@Controller
 @RequestMapping("/user")
 public class UserController {
 
@@ -20,7 +20,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String showUsersTable(Model model) {
         model.addAttribute("users", userService.getUsersList());
         return "users";
@@ -34,9 +34,10 @@ public class UserController {
     @PostMapping("/add")
     public String addUser(@ModelAttribute User user) {
         userService.addUser(user);
-        return "redirect:/user/";
+        return "redirect:/user";
     }
 }
+
 
 
 

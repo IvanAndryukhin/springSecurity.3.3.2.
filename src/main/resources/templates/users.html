@@ -7,43 +7,31 @@
 </head>
 <body>
 <h1>User List</h1>
-
-<!-- Сообщение об успешном удалении -->
-<div th:if="${successMessage}">
-    <p th:text="${successMessage}" style="color:green;"></p>
-</div>
-
-<table border="1">
+<table>
     <thead>
     <tr>
         <th>ID</th>
+        <th>Username</th>
         <th>Name</th>
         <th>Email</th>
-        <th>Address</th>
         <th>Actions</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="user : ${users}">
         <td th:text="${user.id}"></td>
+        <td th:text="${user.username}"></td>
         <td th:text="${user.name}"></td>
         <td th:text="${user.email}"></td>
-        <td th:text="${user.address}"></td>
         <td>
             <a th:href="@{/admin/edit(id=${user.id})}">Edit</a>
-            <form action="@{/admin/delete}" method="post" style="display:inline;">
-                <input type="hidden" name="id" th:value="${user.id}"/>
-                <input type="submit" value="Delete"/>
-            </form>
         </td>
     </tr>
     </tbody>
 </table>
-
-<a href="/admin/new">Add New User</a>
+<a href="/user/new">Create New User</a>
 </body>
 </html>
-
 
 
 

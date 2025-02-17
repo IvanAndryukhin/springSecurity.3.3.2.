@@ -21,6 +21,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/user")
+                        .failureUrl("/login?error=true") // Обработка ошибок аутентификации
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -36,3 +37,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+
