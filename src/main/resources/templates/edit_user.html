@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+</head>
+<body>
+<h1>Edit User</h1>
+
+<!-- Сообщение об ошибке или успешном обновлении -->
+<div th:if="${successMessage}">
+    <p th:text="${successMessage}" style="color:green;"></p>
+</div>
+<div th:if="${errorMessages}">
+    <p th:each="message : ${errorMessages}" th:text="${message}" style="color:red;"></p>
+</div>
+
+<form action="/admin/update" method="post">
+    <input type="hidden" name="id" th:value="${user.id}"/>
+
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" th:value="${user.name}" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" th:value="${user.email}" required>
+
+    <label for="address">Address</label>
+    <input type="text" id="address" name="address" th:value="${user.address}" required>
+
+    <input type="submit" value="Update User">
+</form>
+
+<a href="/" class="button">Back to User List</a>
+</body>
+</html>
+
+
+
