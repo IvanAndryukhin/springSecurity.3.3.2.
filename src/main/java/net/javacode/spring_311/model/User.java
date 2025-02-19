@@ -12,10 +12,12 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 
 @Entity
@@ -25,15 +27,20 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(name = "username", unique = true)
     private String username;
 
+    @NotBlank
     @Column(name = "password")
     private String password;
 
+    @NotBlank
     @Column(name = "name")
     private String name;
 
+    @NotBlank
+    @Email
     @Column(name = "email", unique = true)
     private String email;
 

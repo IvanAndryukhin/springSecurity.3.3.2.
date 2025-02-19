@@ -11,6 +11,9 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "roles")
@@ -19,6 +22,8 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Size(min = 1, max = 50)
     private String name;
 
     @ManyToMany(mappedBy = "roles")
@@ -28,25 +33,32 @@ public class Role implements GrantedAuthority {
     public String getAuthority() {
         return name;
     }
+
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public Set<User> getUsers() {
         return users;
     }
+
     public void addUser(User user) {
         users.add(user);
         user.getRoles().add(this);
     }
+
     @Override
     public String toString() {
         return "Role{" +
@@ -62,5 +74,6 @@ public class Role implements GrantedAuthority {
         this.name = name;
     }
 }
+
 
 

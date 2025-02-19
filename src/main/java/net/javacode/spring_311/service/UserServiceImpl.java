@@ -1,7 +1,6 @@
 package net.javacode.spring_311.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import net.javacode.spring_311.model.User;
 import net.javacode.spring_311.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addUser(@Valid User user) {
+    public void addUser(User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new IllegalArgumentException("User with username '" + user.getUsername() + "' already exists.");
         }
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(@Valid User user) {
+    public void updateUser(User user) {
         User existingUser = userRepository.findById(user.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + user.getId()));
 

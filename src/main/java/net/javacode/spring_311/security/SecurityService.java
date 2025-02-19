@@ -1,7 +1,7 @@
 package net.javacode.spring_311.security;
 
-import jakarta.transaction.Transactional;
-import net.javacode.spring_311.controller.EntityNotFoundException;
+import net.javacode.spring_311.exception.EntityNotFoundException;
+import net.javacode.spring_311.model.User;
 import net.javacode.spring_311.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,10 +19,15 @@ public class SecurityService implements UserDetailsService {
     }
 
     @Override
-    @Transactional
     public UserDetails loadUserByUsername(String username) throws EntityNotFoundException {
-        return userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User not found: " + username));
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getAuthorities()
+        );
     }
 }
 

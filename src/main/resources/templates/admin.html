@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+</head>
+<body>
+<h1>Admin Dashboard</h1>
+<p>Welcome to the admin section!</p>
+
+<h2>User Management</h2>
+<a href="/user/new">Create New User</a>
+<table>
+  <thead>
+  <tr>
+    <th>Username</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <!-- Here will be the loop to display users -->
+  <tr>
+    <td>exampleUser</td>
+    <td>Example Name</td>
+    <td>example@example.com</td>
+    <td>
+      <a href="/admin/edit?id=1">Edit</a>
+      <form action="/admin/delete" method="post" style="display:inline;">
+        <input type="hidden" name="id" value="1">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+  <!-- Add more user rows here -->
+  </tbody>
+</table>
+
+<a href="/">Logout</a>
+</body>
+</html>

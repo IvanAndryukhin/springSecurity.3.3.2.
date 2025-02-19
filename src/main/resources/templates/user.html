@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+</head>
+<body>
+<h1>User Profile</h1>
+
+<div>
+  <h2>Current User Information</h2>
+  <p><strong>ID:</strong> <span th:text="${currentUser.id}"></span></p>
+  <p><strong>Username:</strong> <span th:text="${currentUser.username}"></span></p>
+  <p><strong>Name:</strong> <span th:text="${currentUser.name}"></span></p>
+  <p><strong>Email:</strong> <span th:text="${currentUser.email}"></span></p>
+  <p><strong>Address:</strong> <span th:text="${currentUser.address}"></span></p>
+</div>
+
+<a href="/logout">Logout</a>
+</body>
+</html>
+

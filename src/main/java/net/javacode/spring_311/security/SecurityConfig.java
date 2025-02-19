@@ -3,32 +3,29 @@ package net.javacode.spring_311.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user").hasAnyRole("USER", "ADMIN")
+
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/login", "/register").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/user")
-                        .failureUrl("/login?error=true") // Обработка ошибок аутентификации
+                        .loginPage("/login") // Страница логина
                         .permitAll()
                 )
-                .logout(logout -> logout
-                        .permitAll()
-                        .logoutSuccessUrl("/login?logout")
-                        .invalidateHttpSession(true)
-                );
+                .logout(logout -> logout.permitAll()); // Разрешить выход
+
         return http.build();
     }
 
@@ -36,5 +33,11 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public LoginSuccessHandler loginSuccessHandler() {
+        return new LoginSuccessHandler();
+    }
 }
+
 
