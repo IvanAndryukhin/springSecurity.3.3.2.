@@ -31,6 +31,7 @@ public class AdminController {
         return "admin";
     }
 
+
     @GetMapping("/users")
     public String listUsers(Model model) {
         List<User> users = userService.getUsersList();
@@ -58,5 +59,11 @@ public class AdminController {
         userService.deleteUser(id);
         return "redirect:/admin/users";
     }
+
+    @GetMapping("/logout")
+    public String logout() {
+        return "redirect:/login?logout";
+    }
+
 }
 
