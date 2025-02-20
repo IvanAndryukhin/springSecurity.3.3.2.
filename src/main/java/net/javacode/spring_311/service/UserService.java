@@ -8,8 +8,6 @@ public interface UserService {
 
     List<User> getUsersList();
     User getUser(Long id);
-    void addUser(User user);
     void updateUser(User user);
     void deleteUser(Long id);
-    boolean isUsernameTaken(String username);
 }

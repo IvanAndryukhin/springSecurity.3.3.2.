@@ -1,4 +1,4 @@
-package net.javacode.spring_311.repositories;
+package net.javacode.spring_311.repository;
 
 import net.javacode.spring_311.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,8 +1,9 @@
 package net.javacode.spring_311.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import net.javacode.spring_311.exception.NotUniqueUserNameException;
 import net.javacode.spring_311.model.User;
-import net.javacode.spring_311.repositories.UserRepository;
+import net.javacode.spring_311.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new IllegalArgumentException("User with username '" + user.getUsername() + "' already exists.");
+            throw new NotUniqueUserNameException("User with username '" + user.getUsername() + "' already exists.");
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
         if (!existingUser.getUsername().equals(user.getUsername()) &&
                 userRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new IllegalArgumentException("Username already exists: " + user.getUsername());
+            throw new NotUniqueUserNameException("Username already exists: " + user.getUsername());
         }
 
         existingUser.setUsername(user.getUsername());

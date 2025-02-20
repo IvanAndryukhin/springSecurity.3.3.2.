@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -15,17 +16,24 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/register").permitAll()
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // Страница логина
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/user")
+                        .failureUrl("/login?error=true")
+                        .successHandler(loginSuccessHandler())
                         .permitAll()
                 )
-                .logout(logout -> logout.permitAll()); // Разрешить выход
-
+                .logout(logout -> logout
+                        .permitAll()
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                );
         return http.build();
     }
 
@@ -35,9 +43,11 @@ public class SecurityConfig {
     }
 
     @Bean
-    public LoginSuccessHandler loginSuccessHandler() {
+    public AuthenticationSuccessHandler loginSuccessHandler() {
         return new LoginSuccessHandler();
     }
 }
+
+
 
 
