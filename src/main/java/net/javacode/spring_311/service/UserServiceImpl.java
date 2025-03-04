@@ -1,6 +1,7 @@
 package net.javacode.spring_311.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import net.javacode.spring_311.exception.NotUniqueUserNameException;
 import net.javacode.spring_311.model.User;
 import net.javacode.spring_311.repository.UserRepository;
@@ -80,3 +81,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByUsername(username);
     }
 }
+

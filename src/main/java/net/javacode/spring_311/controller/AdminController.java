@@ -21,22 +21,16 @@ public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
 
-    public AdminController(UserService userService , RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
-        this.roleService= roleService;
+        this.roleService = roleService;
     }
-
-    @GetMapping
-    public String showAdminPage() {
-        return "admin";
-    }
-
 
     @GetMapping("/users")
     public String listUsers(Model model) {
         List<User> users = userService.getUsersList();
         model.addAttribute("users", users);
-        return "user_list";
+        return "admin";
     }
 
     @GetMapping("/edit")
@@ -45,7 +39,7 @@ public class AdminController {
         List<Role> roles = roleService.getAllRoles();
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
-        return "edit_user";
+        return "admin";
     }
 
     @PostMapping("/update")
@@ -60,10 +54,28 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    // Новый метод для отображения страницы добавления пользователя
+    @GetMapping("/add")
+    public String showAddUserForm(Model model) {
+        User user = new User(); // Создаем новый объект User
+        List<Role> roles = roleService.getAllRoles();
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
+        return "admin"; // Возвращаем страницу для добавления пользователя
+    }
+
+    // Новый метод для сохранения нового пользователя
+    @PostMapping()
+    public String addUser(@ModelAttribute User user) {
+        userService.addUser(user);
+        return "redirect:/admin/users"; // Перенаправление на список пользователей после добавления
+    }
+
     @GetMapping("/logout")
     public String logout() {
         return "redirect:/login?logout";
     }
-
 }
+
+
 

@@ -122,6 +122,13 @@ public class User implements UserDetails {
         role.getUsers().add(this);
     }
 
+    public void setRoles(Set<Role> roles) {
+        this.roles.clear();
+        if (roles != null) {
+            this.roles.addAll(roles);
+        }
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -147,4 +154,5 @@ public class User implements UserDetails {
         return true;
     }
 }
+
 
