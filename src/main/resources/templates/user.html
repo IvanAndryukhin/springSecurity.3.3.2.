@@ -1,31 +1,110 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>User page</title>
-  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Admin panel</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<header th:replace="fragments/header :: header"></header>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col bg-white px-0">
-      <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <button class="nav-link active text-start" id="v-pills-user-tab" data-bs-toggle="pill"
-                data-bs-target="#v-pills-user" type="button" role="tab" aria-controls="v-pills-user" aria-selected="true">User
-        </button>
-      </div>
+<nav class="navbar navbar-expand-lg text-white bg-dark">
+  <div class="container-fluid">
+    <ul class="navbar-nav me-auto mb-2 mb-xl-0">
+      <li>
+        <span class="align-middle font-weight-bold mr-1" th:text="${currentUser.email}"></span>
+        <span class="align-middle mr-1">with roles:</span>
+        <span class="align-middle">
+          <span th:each="role, iterStat : ${currentUser.roles}" th:text="${#strings.substringAfter(role.name, 'ROLE_')}">
+            <span th:if="${!iterStat.last}"> </span>
+          </span>
+        </span>
+      </li>
+    </ul>
+
+    <form th:action="@{/logout}" method="post">
+      <button type="submit" class="btn btn-dark text-secondary">Logout</button>
+    </form>
+  </div>
+</nav>
+
+<!--Тело страницы начало-->
+<div class="container-fluid h=100">
+  <div class="row h=100">
+
+    <!--контейнер для левой боковой панели Юзер Админ начало-->
+    <div class="p-0 col-2 py-3">
+      <ul class="nav nav-pills flex-column">
+        <li class="nav-item">
+          <a th:href="@{/admin}" class="nav-link ps-5" aria-current="page">
+            Admin
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/user}" class="nav-link active ps-5">
+            User
+          </a>
+        </li>
+      </ul>
     </div>
-    <div class="col-10 vh-100 bg-light">
-      <div class="tab-content" id="v-pills-tabContent">
-        <div class="tab-pane fade show active" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-user-tab">
-          <div th:replace="fragments/userInfo :: userInfo"></div>
+    <!--контейнер для левой боковой панели Юзер Админ конец-->
+
+    <!--контейнер для правой основной части экрана начало-->
+    <div class="col-md-10 gx-5 py-3 tab-content" style="background-color:#f8f9fa; height: 100vh">
+      <div class="container-fluid">
+        <h1>Информация о пользователе</h1>
+        <div class="tab-content">
+          <div class="tab-pane fade show active">
+            <div class="card">
+              <div class="card-header">
+                <h4>Пользователь</h4>
+              </div>
+              <div class="card-body">
+                <table class="table table-striped">
+                  <tr>
+                    <th>ID</th>
+                    <th>Имя</th>
+                    <th>Логин</th>
+                    <th>Адрес</th>
+                    <th>Email</th>
+                    <th>Роль</th>
+                  </tr>
+                  <tr>
+                    <td th:text="${currentUser.id}">ID</td>
+                    <td th:text="${currentUser.name}">Name</td>
+                    <td th:text="${currentUser.username}">Username</td>
+                    <td th:text="${currentUser.address}">Address</td>
+                    <td th:text="${currentUser.email}">Email</td>
+                    <td>
+                      <span th:each="role, iterStat : ${currentUser.roles}" th:text="${#strings.substringAfter(role.name, 'ROLE_')}">
+                        <span th:if="${!iterStat.last}">, </span>
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!--Тело страницы конец-->
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>
 

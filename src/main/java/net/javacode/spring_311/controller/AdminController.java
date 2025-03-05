@@ -4,13 +4,11 @@ import net.javacode.spring_311.model.Role;
 import net.javacode.spring_311.model.User;
 import net.javacode.spring_311.service.RoleService;
 import net.javacode.spring_311.service.UserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,55 +25,68 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public String listUsers(Model model) {
+    public String listUsers(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        // Получаем текущего аутентифицированного пользователя
+        User currentUser = userService.findByUsername(userDetails.getUsername());
+        model.addAttribute("user", currentUser); // Передаем текущего пользователя в модель
+
+        // Получаем список всех пользователей и ролей
         List<User> users = userService.getUsersList();
+        List<Role> roles = roleService.getAllRoles();
         model.addAttribute("users", users);
+        model.addAttribute("roles", roles);
+
+        // Передаем нового пользователя в модель для формы добавления
+        User newUser = new User();
+        model.addAttribute("newUser", newUser);
+
         return "admin";
     }
 
+    // Отображение формы редактирования пользователя
     @GetMapping("/edit")
     public String editUser(@RequestParam Long id, Model model) {
-        User user = userService.getUser(id);
-        List<Role> roles = roleService.getAllRoles();
-        model.addAttribute("user", user);
-        model.addAttribute("roles", roles);
+        User user = userService.getUser(id); // Получаем пользователя по ID
+        List<Role> roles = roleService.getAllRoles(); // Получаем список всех ролей
+        model.addAttribute("user", user); // Передаем пользователя в модель
+        model.addAttribute("roles", roles); // Передаем роли в модель
         return "admin";
     }
 
+    // Обновление пользователя
     @PostMapping("/update")
     public String updateUser(@ModelAttribute User user) {
-        userService.updateUser(user);
-        return "redirect:/admin/users";
+        userService.updateUser(user); // Обновляем пользователя
+        return "redirect:/admin/users"; // Перенаправляем на список пользователей
     }
 
+    // Удаление пользователя
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id) {
-        userService.deleteUser(id);
-        return "redirect:/admin/users";
+        userService.deleteUser(id); // Удаляем пользователя по ID
+        return "redirect:/admin/users"; // Перенаправляем на список пользователей
     }
 
-    // Новый метод для отображения страницы добавления пользователя
+    // Отображение формы добавления нового пользователя
     @GetMapping("/add")
     public String showAddUserForm(Model model) {
-        User user = new User(); // Создаем новый объект User
-        List<Role> roles = roleService.getAllRoles();
-        model.addAttribute("user", user);
-        model.addAttribute("roles", roles);
+        User user = new User(); // Создаем нового пользователя
+        List<Role> roles = roleService.getAllRoles(); // Получаем список всех ролей
+        model.addAttribute("user", user); // Передаем нового пользователя в модель
+        model.addAttribute("roles", roles); // Передаем роли в модель
         return "admin"; // Возвращаем страницу для добавления пользователя
     }
 
-    // Новый метод для сохранения нового пользователя
+    // Сохранение нового пользователя
     @PostMapping()
     public String addUser(@ModelAttribute User user) {
-        userService.addUser(user);
-        return "redirect:/admin/users"; // Перенаправление на список пользователей после добавления
+        userService.addUser(user); // Сохраняем нового пользователя
+        return "redirect:/admin/users"; // Перенаправляем на список пользователей
     }
 
+    // Выход из системы
     @GetMapping("/logout")
     public String logout() {
-        return "redirect:/login?logout";
+        return "redirect:/login?logout"; // Перенаправляем на страницу входа с параметром logout
     }
 }
-
-
-
